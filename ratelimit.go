@@ -23,7 +23,7 @@ package ratelimit // import "go.uber.org/ratelimit"
 import (
 	"time"
 
-	"go.uber.org/ratelimit/internal/clock"
+	"github.com/heffcodex/ratelimit/internal/clock"
 	"sync/atomic"
 	"unsafe"
 )
@@ -65,10 +65,10 @@ type limiter struct {
 type Option func(l *limiter)
 
 // New returns a Limiter that will limit to the given RPS.
-func New(rate int, opts ...Option) Limiter {
+func New(rate int, rateUnit time.Duration, opts ...Option) Limiter {
 	l := &limiter{
-		perRequest: time.Second / time.Duration(rate),
-		maxSlack:   -10 * time.Second / time.Duration(rate),
+		perRequest: rateUnit / time.Duration(rate),
+		maxSlack:   -10 * rateUnit / time.Duration(rate),
 	}
 	for _, opt := range opts {
 		opt(l)

@@ -1,7 +1,7 @@
 package ratelimit
 
 import (
-	"go.uber.org/ratelimit/internal/clock"
+	"github.com/heffcodex/ratelimit/internal/clock"
 	"sync"
 	"time"
 )

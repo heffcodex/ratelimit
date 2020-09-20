@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"sync"
 	"testing"
+	"time"
 
 	"go.uber.org/atomic"
 )
@@ -14,7 +15,7 @@ func BenchmarkRateLimiter(b *testing.B) {
 	for _, procs := range []int{1, 4, 8, 16} {
 		runtime.GOMAXPROCS(procs)
 		for name, limiter := range map[string]Limiter{
-			"atomic": New(b.N * 10000000),
+			"atomic": New(b.N * 10000000, time.Second),
 			"mutex":  newMutexBased(b.N * 10000000),
 		} {
 			for ng := 1; ng < 16; ng += 1 {

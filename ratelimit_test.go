@@ -7,14 +7,14 @@ import (
 	"time"
 
 	"go.uber.org/atomic"
-	"go.uber.org/ratelimit"
-	"go.uber.org/ratelimit/internal/clock"
+	"github.com/heffcodex/ratelimit"
+	"github.com/heffcodex/ratelimit/internal/clock"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func ExampleRatelimit() {
-	rl := ratelimit.New(100) // per second
+	rl := ratelimit.New(100, time.Second) // per second
 
 	prev := time.Now()
 	for i := 0; i < 10; i++ {
@@ -52,7 +52,7 @@ func TestRateLimiter(t *testing.T) {
 	defer wg.Wait()
 
 	clock := clock.NewMock()
-	rl := ratelimit.New(100, ratelimit.WithClock(clock), ratelimit.WithoutSlack)
+	rl := ratelimit.New(100, time.Second, ratelimit.WithClock(clock), ratelimit.WithoutSlack)
 
 	count := atomic.NewInt32(0)
 
@@ -90,8 +90,8 @@ func TestDelayedRateLimiter(t *testing.T) {
 	defer wg.Wait()
 
 	clock := clock.NewMock()
-	slow := ratelimit.New(10, ratelimit.WithClock(clock))
-	fast := ratelimit.New(100, ratelimit.WithClock(clock))
+	slow := ratelimit.New(10, time.Second, ratelimit.WithClock(clock))
+	fast := ratelimit.New(100, time.Second, ratelimit.WithClock(clock))
 
 	count := atomic.NewInt32(0)
 

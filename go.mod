@@ -1,4 +1,4 @@
-module go.uber.org/ratelimit
+module github.com/heffcodex/ratelimit
 
 go 1.14
 
